@@ -23,7 +23,7 @@ class Attendee(models.Model):
         return self.name
 
     def get_api_url(self):
-        return reverse("api_show_attendee", kwargs={"pk": self.pk})
+        return reverse("api_show_attendee", kwargs={"id": self.id})
 
 
 class Badge(models.Model):

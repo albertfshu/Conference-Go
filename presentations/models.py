@@ -11,7 +11,6 @@ class Status(models.Model):
     direct URL to view it.
     """
 
-    id = models.PositiveSmallIntegerField(primary_key=True)
     name = models.CharField(max_length=10)
 
     def __str__(self):
@@ -49,7 +48,7 @@ class Presentation(models.Model):
     )
 
     def get_api_url(self):
-        return reverse("api_show_presentation", kwargs={"pk": self.pk})
+        return reverse("api_show_presentation", kwargs={"id": self.id})
 
     def __str__(self):
         return self.title

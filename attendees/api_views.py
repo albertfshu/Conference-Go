@@ -26,10 +26,10 @@ def api_list_attendees(request, conference_id):
     return JsonResponse({})
 
 
-def api_show_attendee(request, pk):
+def api_show_attendee(request, id):
     """
     Returns the details for the Attendee model specified
-    by the pk parameter.
+    by the id parameter.
 
     This should return a dictionary with email, name,
     company name, created, and conference properties for

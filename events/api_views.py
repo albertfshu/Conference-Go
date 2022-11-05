@@ -34,10 +34,10 @@ def api_list_conferences(request):
     return JsonResponse({"conferences": response})
 
 
-def api_show_conference(request, pk):
+def api_show_conference(request, id):
     """
     Returns the details for the Conference model specified
-    by the pk parameter.
+    by the id parameter.
 
     This should return a dictionary with the name, starts,
     ends, description, created, updated, max_presentations,
@@ -59,7 +59,7 @@ def api_show_conference(request, pk):
         }
     }
     """
-    conference = Conference.objects.get(id=pk)
+    conference = Conference.objects.get(id=id)
     return JsonResponse(
         {
             "name": conference.name,
@@ -100,10 +100,10 @@ def api_list_locations(request):
     return JsonResponse({})
 
 
-def api_show_location(request, pk):
+def api_show_location(request, id):
     """
     Returns the details for the Location model specified
-    by the pk parameter.
+    by the id parameter.
 
     This should return a dictionary with the name, city,
     room count, created, updated, and state abbreviation.
