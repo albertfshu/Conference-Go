@@ -130,9 +130,9 @@ def api_list_presentations(request, conference_id):
         )
 
 
-def api_show_presentation(request, pk):
+def api_show_presentation(request, id):
 
-    presentation = Presentation.objects.get(id=pk)
+    presentation = Presentation.objects.get(id=id)
     return JsonResponse(
         presentation,
         encoder=PresentationDetailEncoder,

@@ -2,8 +2,7 @@ from django.http import JsonResponse
 from common.json import ModelEncoder
 from django.views.decorators.http import require_http_methods
 import json
-from .models import ConferenceVO, Attendee
-from attendees.models import AccountVO
+from .models import ConferenceVO, Attendee, AccountVO
 
 
 class ConferenceVODetailEncoder(ModelEncoder):
@@ -13,9 +12,7 @@ class ConferenceVODetailEncoder(ModelEncoder):
 
 class AttendeeListEncoder(ModelEncoder):
     model = Attendee
-    properties = [
-        "name",
-    ]
+    properties = ["name"]
 
 
 class AttendeeDetailEncoder(ModelEncoder):
@@ -32,8 +29,8 @@ class AttendeeDetailEncoder(ModelEncoder):
     }
 
     def get_extra_data(self, o):
-        account_count = AccountVO.objects.filter(email=o.email).count()
-        return {"has_account": account_count > 0}
+        count = AccountVO.objects.filter(email=o.email).count()
+        return {"has_account": count > 0}
 
 
 @require_http_methods(["DELETE", "GET", "PUT"])
@@ -73,22 +70,25 @@ def api_list_attendees(request, conference_vo_id=None):
         attendees = Attendee.objects.filter(conference=conference_vo_id)
         # attendees = Attendee.objects.filter(id=conference_id)
         return JsonResponse(
-            {"attendees": attendees}, encoder=AttendeeListEncoder, safe=False
+            {"attendees": attendees},
+            encoder=AttendeeListEncoder,
         )
     else:
         content = json.loads(request.body)
-    try:
-        conference_href = f"/api/conferences/{conference_vo_id}/"
-        conference = ConferenceVO.objects.get(import_href=conference_href)
-        content["conference"] = conference
-    except ConferenceVO.DoesNotExist:
+
+        try:
+            conference_href = f"/api/conferences/{conference_vo_id}/"
+            # conference_href = content["conference"]
+            conference = ConferenceVO.objects.get(import_href=conference_href)
+            content["conference"] = conference
+        except ConferenceVO.DoesNotExist:
+            return JsonResponse(
+                {"message": "Invalid conference id"},
+                status=400,
+            )
+        attendee = Attendee.objects.create(**content)
         return JsonResponse(
-            {"message": "Invalid conference id"},
-            status=400,
+            attendee,
+            encoder=AttendeeDetailEncoder,
+            safe=False,
         )
-    attendee = Attendee.objects.create(**content)
-    return JsonResponse(
-        attendee,
-        encoder=AttendeeDetailEncoder,
-        safe=False,
-    )

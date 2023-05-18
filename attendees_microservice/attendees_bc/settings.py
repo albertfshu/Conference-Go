@@ -42,9 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
-CRONJOBS = [
-    ("* * * * *", "attendees.poll.get_conferences"),
-]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -53,6 +51,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+CRONJOBS = [
+    ("* * * * *", "attendees.poll.get_conferences"),
 ]
 
 ROOT_URLCONF = "attendees_bc.urls"

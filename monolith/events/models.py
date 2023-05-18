@@ -43,7 +43,7 @@ class Location(models.Model):
     )
 
     def get_api_url(self):
-        return reverse("api_show_location", kwargs={"pk": self.pk})
+        return reverse("api_show_location", kwargs={"id": self.id})
 
     def __str__(self):
         return self.name

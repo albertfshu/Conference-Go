@@ -66,7 +66,7 @@ class Presentation(models.Model):
         self.save()
 
     def get_api_url(self):
-        return reverse("api_show_presentation", kwargs={"pk": self.pk})
+        return reverse("api_show_presentation", kwargs={"id": self.id})
 
     def __str__(self):
         return self.title
